@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游迹</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>游迹</h1>
+        <div style="display: flex; gap: 1rem; align-items: center; margin-left: auto;">
+            <button class="import-btn" onclick="document.getElementById('importInput').click()">导入数据</button>
+            <button class="export-btn" onclick="exportData()">导出数据</button>
+            <input type="file" id="importInput" accept=".json" style="display: none" onchange="if(this.files.length > 0) importData(this.files[0])">
+            <button id="addGameBtn">添加游戏</button>
+        </div>
+    </header>
+
+    <div class="filters">
+        <div class="filter-group">
+            <label>年份筛选：</label>
+            <select id="yearFilter">
+                <option value="all">全部年份</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>平台筛选：</label>
+            <select id="platformFilter">
+                <option value="all">全部平台</option>
+            </select>
+        </div>
+    </div>
+
+    <main class="game-grid">
+        <!-- 游戏卡片将通过JavaScript动态添加 -->
+    </main>
+
+    <!-- 添加游戏的弹窗 -->
+    <div id="addGameModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 2rem;">添加新游戏</h2>
+            <form id="addGameForm">
+                <div class="form-group">
+                    <label for="gameTitle">游戏名称：</label>
+                    <input type="text" id="gameTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="gameCover">游戏封面：</label>
+                    <input type="file" id="gameCover" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="releaseDate">发售日期：</label>
+                    <input type="date" id="releaseDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="platform">游玩平台：</label>
+                    <input type="text" id="platform" required>
+                </div>
+                <div class="form-group">
+                    <label for="playDate">游玩日期：</label>
+                    <input type="date" id="playDate" required>
+                </div> 
+                <div class="form-group">
+                    <label for="rating">评分（0-10）：</label>
+                    <input type="number" id="rating" min="0" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="review"> 游戏评价：</label>
+                    <textarea id="review" rows="6" required></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit">保存</button>
+                    <button type="button" class="cancel-btn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 游戏详情的弹窗 -->
+    <div id="gameDetailsModal" class="modal">
+        <div class="modal-content game-details-content">
+            <button class="close-btn">×</button>
+            <button class="edit-btn" title="编辑游戏">✎</button>
+            <img id="detailsCover" class="game-cover-large">
+            <h1 id="detailsTitle"></h1>
+            <div id="detailsInfo" class="game-details"></div>
+            <div class="game-review" id="detailsReview"></div>
+        </div>
+    </div>
+
+    <!-- 编辑游戏的弹窗 -->
+    <div id="editGameModal" class="modal">
+        <div class="modal-content">
+            <h2>编辑游戏</h2>
+            <form id="editGameForm">
+                <input type="hidden" id="editGameId">
+                <div class="form-group">
+                    <label for="editGameTitle">游戏标题：</label>
+                    <input type="text" id="editGameTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="editGameCover">游戏封面：</label>
+                    <input type="file" id="editGameCover" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="editReleaseDate">发售日期：</label>
+                    <input type="date" id="editReleaseDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPlatform">游玩平台：</label>
+                    <input type="text" id="editPlatform" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPlayDate">游玩日期：</label>
+                    <input type="date" id="editPlayDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="editRating">评分（1-10）：</label>
+                    <input type="number" id="editRating" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="editReview">游玩心得：</label>
+                    <textarea id="editReview" rows="4" required></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit">保存</button>
+                    <button type="button" class="cancel-btn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+                <div id="detailsReview"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
