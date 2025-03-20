@@ -58,12 +58,12 @@
                     <input type="text" id="platform" required>
                 </div>
                 <div class="form-group">
-                    <label for="playDate">游玩日期：</label>
+                    <label for="playDate">通关日期：</label>
                     <input type="date" id="playDate" required>
                 </div> 
                 <div class="form-group">
-                    <label for="rating">评分（0-10）：</label>
-                    <input type="number" id="rating" min="0" max="10" required>
+                    <label for="rating">评分（0-10）：<span id="ratingValue">5</span></label>
+                    <input type="range" id="rating" min="0" max="10" step="0.5" value="5" required>
                 </div>
                 <div class="form-group">
                     <label for="review"> 游戏评价：</label>
@@ -112,12 +112,12 @@
                     <input type="text" id="editPlatform" required>
                 </div>
                 <div class="form-group">
-                    <label for="editPlayDate">游玩日期：</label>
+                    <label for="editPlayDate">通关日期：</label>
                     <input type="date" id="editPlayDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="editRating">评分（1-10）：</label>
-                    <input type="number" id="editRating" min="1" max="10" required>
+                    <label for="editRating">评分（0-10）：<span id="editRatingValue">5</span></label>
+                    <input type="range" id="editRating" min="0" max="10" step="0.5" value="5" required>
                 </div>
                 <div class="form-group">
                     <label for="editReview">游玩心得：</label>

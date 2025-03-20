@@ -153,6 +153,24 @@ function showError(message) {
     setTimeout(() => errorDiv.remove(), 3000);
 }
 
+// 添加评分滑动条的实时显示功能
+const ratingSlider = document.getElementById('rating');
+const ratingValue = document.getElementById('ratingValue');
+const editRatingSlider = document.getElementById('editRating');
+const editRatingValue = document.getElementById('editRatingValue');
+
+if (ratingSlider) {
+    ratingSlider.addEventListener('input', function() {
+        ratingValue.textContent = this.value;
+    });
+}
+
+if (editRatingSlider) {
+    editRatingSlider.addEventListener('input', function() {
+        editRatingValue.textContent = this.value;
+    });
+}
+
 // 添加新游戏
 addGameForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -232,7 +250,7 @@ function createGameCard(game) {
             <div class="game-details">
                 <p>发售日期：${new Date(game.releaseDate).toLocaleDateString()}</p>
                 <p>游玩平台：${game.platform}</p>
-                <p>游玩日期：${new Date(game.playDate).toLocaleDateString()}</p>
+                <p>通关日期：${new Date(game.playDate).toLocaleDateString()}</p>
             </div>
             <div class="game-rating">评分：${game.rating}/10</div>
         </div>
@@ -259,7 +277,7 @@ function showGameDetails(game) {
     document.getElementById('detailsInfo').innerHTML = `
         <p>发售日期：${new Date(game.releaseDate).toLocaleDateString()}</p>
         <p>游玩平台：${game.platform}</p>
-        <p>游玩日期：${new Date(game.playDate).toLocaleDateString()}</p>
+        <p>通关日期：${new Date(game.playDate).toLocaleDateString()}</p>
         <p>评分：${game.rating}/10</p>
     `;
     document.getElementById('detailsReview').textContent = game.review;
