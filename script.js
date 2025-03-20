@@ -107,7 +107,7 @@ async function compressImage(base64String) {
             canvas.height = height;
             
             ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/jpeg', 0.7)); // 使用JPEG格式，70%质量
+            resolve(canvas.toDataURL()); // 使用原始图片格式
         };
     });
 }

@@ -75,6 +75,7 @@ header {
     cursor: pointer;
     position: relative;
     border: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
 }
 
 .game-card:hover {
@@ -161,11 +162,12 @@ header {
 
 .game-cover {
     width: 100%;
-    height: 250px;
-    object-fit: cover;
+    height: 200px;
+    object-fit: fill;
     background-color: #1a1a1a;
     border-radius: 8px 8px 0 0;
     margin-bottom: 0;
+    transition: height 0.3s ease;
 }
 
 .game-info {
@@ -368,7 +370,7 @@ header {
     }
 
     .game-cover {
-        height: 450px;
+        height: 300px;
     }
 
     .game-cover-large {
