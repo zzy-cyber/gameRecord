@@ -251,7 +251,7 @@ function createGameCard(game) {
             game.releaseDate
         ).toLocaleDateString()}</p>
                 <p>游玩平台：${game.platform}</p>
-                <p>通关日期：${game.playDate.value ? new Date(game.playDate).toLocaleDateString() : "以往游戏"}</p>
+                <p>通关日期：${game.playDate ? new Date(game.playDate).toLocaleDateString() : "过往游戏"}</p>
             </div>
             <div class="game-rating">评分：${game.rating}/10</div>
         </div>
@@ -320,6 +320,13 @@ async function updateGameList() {
             const platformMatch = selectedPlatform === "all" || game.platform === selectedPlatform;
             const finishMatch = showUnfinished || game.playDate;
             return yearMatch && platformMatch && finishMatch;
+        });
+
+        // 排序游戏列表，将通关日期为过往游戏的卡片放在最后面
+        filteredGames.sort((a, b) => {
+            if (!a.playDate && b.playDate) return 1;
+            if (a.playDate && !b.playDate) return -1;
+            return 0;
         });
 
         // 清空并重新填充游戏网格
