@@ -251,7 +251,7 @@ function createGameCard(game) {
             game.releaseDate
         ).toLocaleDateString()}</p>
                 <p>游玩平台：${game.platform}</p>
-                <p>通关日期：${new Date(game.playDate).toLocaleDateString()}</p>
+                <p>通关日期：${game.playDate.value ? new Date(game.playDate).toLocaleDateString() : "以往游戏"}</p>
             </div>
             <div class="game-rating">评分：${game.rating}/10</div>
         </div>
@@ -340,7 +340,9 @@ async function updateFilters() {
         const platforms = new Set();
 
         games.forEach((game) => {
-            years.add(new Date(game.playDate).getFullYear().toString());
+            if (game.playDate) {
+                years.add(new Date(game.playDate).getFullYear().toString());
+            }
             platforms.add(game.platform);
         });
 
