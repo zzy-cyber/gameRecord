@@ -33,6 +33,10 @@
                 <option value="all">全部平台</option>
             </select>
         </div>
+        <div class="filter-group">
+            <input type="checkbox" id="showUnfinishedGames" checked>
+            <label for="showUnfinishedGames">显示以往游戏</label>
+        </div>
     </div>
 
     <main class="game-grid">
@@ -62,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label for="playDate">通关日期：</label>
-                    <input type="date" id="playDate" required>
+                    <input type="date" id="playDate">
                 </div>
                 <div class="form-group">
                     <label for="rating">评分（0-10）：<span id="ratingValue">5</span></label>
@@ -116,7 +120,7 @@
                 </div>
                 <div class="form-group">
                     <label for="editPlayDate">通关日期：</label>
-                    <input type="date" id="editPlayDate" required>
+                    <input type="date" id="editPlayDate">
                 </div>
                 <div class="form-group">
                     <label for="editRating">评分（0-10）：<span id="editRatingValue">5</span></label>

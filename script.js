@@ -310,13 +310,16 @@ async function updateGameList() {
         const selectedYear = yearFilter.value;
         const selectedPlatform = platformFilter.value;
 
+        // 获取复选框状态
+        const showUnfinished = document.getElementById("showUnfinishedGames").checked;
+
         // 筛选游戏
         const filteredGames = games.filter((game) => {
-            const gameYear = new Date(game.playDate).getFullYear().toString();
-            const yearMatch = selectedYear === "all" || gameYear === selectedYear;
-            const platformMatch =
-                selectedPlatform === "all" || game.platform === selectedPlatform;
-            return yearMatch && platformMatch;
+            const gameYear = game.playDate ? new Date(game.playDate).getFullYear().toString() : null;
+            const yearMatch = selectedYear === "all" || (gameYear && gameYear === selectedYear);
+            const platformMatch = selectedPlatform === "all" || game.platform === selectedPlatform;
+            const finishMatch = showUnfinished || game.playDate;
+            return yearMatch && platformMatch && finishMatch;
         });
 
         // 清空并重新填充游戏网格
@@ -369,6 +372,7 @@ async function updateFilters() {
 // 监听筛选器变化
 yearFilter.addEventListener("change", updateGameList);
 platformFilter.addEventListener("change", updateGameList);
+document.getElementById("showUnfinishedGames").addEventListener("change", updateGameList);
 
 // 显示编辑表单
 function showEditForm(game) {
