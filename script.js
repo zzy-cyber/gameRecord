@@ -253,7 +253,7 @@ function createGameCard(game) {
                 <p>游玩平台：${game.platform}</p>
                 <p>通关日期：${game.playDate ? new Date(game.playDate).toLocaleDateString() : "过往游戏"}</p>
             </div>
-            <div class="game-rating">评分：${game.rating}/10</div>
+            <div class="game-rating">评分：${game.rating}</div>
         </div>
     `;
 
@@ -322,10 +322,21 @@ async function updateGameList() {
             return yearMatch && platformMatch && finishMatch;
         });
 
-        // 排序游戏列表，将通关日期为过往游戏的卡片放在最后面
+        // 获取评分排序方式
+        const ratingSort = document.getElementById("ratingSort").value;
+
+        // 排序游戏列表
         filteredGames.sort((a, b) => {
+            // 首先按照通关状态排序
             if (!a.playDate && b.playDate) return 1;
             if (a.playDate && !b.playDate) return -1;
+
+            // 然后按照评分排序
+            if (ratingSort === "desc") {
+                return b.rating - a.rating;
+            } else if (ratingSort === "asc") {
+                return a.rating - b.rating;
+            }
             return 0;
         });
 
@@ -381,6 +392,7 @@ async function updateFilters() {
 // 监听筛选器变化
 yearFilter.addEventListener("change", updateGameList);
 platformFilter.addEventListener("change", updateGameList);
+document.getElementById("ratingSort").addEventListener("change", updateGameList);
 document.getElementById("showUnfinishedGames").addEventListener("change", updateGameList);
 
 // 显示编辑表单
