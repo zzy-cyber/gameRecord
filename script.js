@@ -327,11 +327,7 @@ async function updateGameList() {
 
         // 排序游戏列表
         filteredGames.sort((a, b) => {
-            // 首先按照通关状态排序
-            if (!a.playDate && b.playDate) return 1;
-            if (a.playDate && !b.playDate) return -1;
-
-            // 然后按照评分排序
+            // 按照评分排序
             if (ratingSort === "desc") {
                 return b.rating - a.rating;
             } else if (ratingSort === "asc") {
