@@ -340,9 +340,9 @@ async function updateGameList() {
 
         // 排序游戏列表
         filteredGames.sort((a, b) => {
-            // 计算加权评分用于排序
-            const ratingA = calculateWeightedRating(a.ratings);
-            const ratingB = calculateWeightedRating(b.ratings);
+            // 计算加权评分用于排序(不使用四舍五入结果)
+            const ratingA = calculateRawRating(a.ratings);
+            const ratingB = calculateRawRating(b.ratings);
 
             // 按照加权评分排序
             if (ratingSort === "desc") {
@@ -574,7 +574,7 @@ updateGameList();
 updateFilters();
 
 // 计算加权平均分 (0-5)
-function calculateWeightedRating(ratings) {
+function calculateRawRating(ratings) {
     if (!ratings) return 0;
     const weights = {
         overall: 0.3,
@@ -589,6 +589,11 @@ function calculateWeightedRating(ratings) {
     total += (ratings.story || 0) * weights.story;
     total += (ratings.graphics || 0) * weights.graphics;
     total += (ratings.music || 0) * weights.music;
+    return total;
+}
+
+function calculateWeightedRating(ratings) {
+    const total = calculateRawRating(ratings);
     // 四舍五入到最近的 0.5
     return Math.round(total * 2) / 2;
 }
