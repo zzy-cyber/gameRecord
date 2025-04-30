@@ -162,6 +162,28 @@ header {
     white-space: pre-wrap;
 }
 
+.detailed-ratings {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+.detailed-ratings p {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detailed-ratings .stars {
+    min-width: 80px; /* Align stars */
+    display: inline-block;
+}
+
+.detailed-ratings strong {
+    color: #fff;
+}
+
 .game-cover {
     width: 100%;
     height: 200px;
@@ -176,6 +198,39 @@ header {
     padding: 1rem;
 }
 
+.rating-group > label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.rating-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.rating-inputs div {
+    display: flex;
+    flex-direction: column; /* Stack label and select vertically */
+    gap: 0.3rem;
+}
+
+.rating-inputs label {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.rating-inputs select {
+    padding: 0.5rem;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #333;
+    color: #e0e0e0;
+    width: 100%; /* Make selects take full width of their grid cell */
+}
+
 .game-title {
     font-size: 1.2rem;
     font-weight: bold;
@@ -185,6 +240,29 @@ header {
 .game-details {
     font-size: 0.9rem;
     color: #a0a0a0;
+    margin-bottom: 0.5rem; /* Add some space below details */
+}
+
+.game-rating {
+    color: #f39c12;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem; /* Space between stars and text */
+}
+
+.stars {
+    font-size: 1.1em; /* Make stars slightly larger */
+    line-height: 1; /* Prevent extra line height */
+}
+
+.stars .fa-star, .stars .fa-star-half-alt, .stars .far.fa-star {
+    color: #f39c12; /* Star color */
+}
+
+.stars .far.fa-star {
+    color: #555; /* Empty star color */
 }
 
 .game-rating {

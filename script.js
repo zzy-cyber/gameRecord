@@ -199,7 +199,13 @@ addGameForm.addEventListener("submit", async (e) => {
             playDate: document.getElementById("playDate").value,
             releaseDate: document.getElementById("releaseDate").value,
             platform: document.getElementById("platform").value,
-            rating: document.getElementById("rating").value,
+            ratings: {
+                overall: parseInt(document.getElementById("ratingOverall").value),
+                gameplay: parseInt(document.getElementById("ratingGameplay").value),
+                story: parseInt(document.getElementById("ratingStory").value),
+                graphics: parseInt(document.getElementById("ratingGraphics").value),
+                music: parseInt(document.getElementById("ratingMusic").value),
+            },
             review: document.getElementById("review").value,
         };
 
@@ -240,20 +246,20 @@ async function deleteGame(gameId, event) {
 function createGameCard(game) {
     const card = document.createElement("div");
     card.className = "game-card";
+    const totalRating = calculateWeightedRating(game.ratings);
+    const starsHTML = generateStars(totalRating);
+
     card.innerHTML = `
         <button class="delete-btn" title="删除游戏">X</button>
-        <img loading="lazy" src="${game.cover}" alt="${game.title
-        }" class="game-cover">
+        <img loading="lazy" src="${game.cover}" alt="${game.title}" class="game-cover">
         <div class="game-info">
             <h3 class="game-title">${game.title}</h3>
             <div class="game-details">
-                <p>发售日期：${new Date(
-            game.releaseDate
-        ).toLocaleDateString()}</p>
+                <p>发售日期：${new Date(game.releaseDate).toLocaleDateString()}</p>
                 <p>游玩平台：${game.platform}</p>
                 <p>通关日期：${game.playDate ? new Date(game.playDate).toLocaleDateString() : "过往游戏"}</p>
             </div>
-            <div class="game-rating">评分：${game.rating}</div>
+            <div class="game-rating">评分：${starsHTML} (${totalRating.toFixed(1)})</div>
         </div>
     `;
 
@@ -277,11 +283,20 @@ function showGameDetails(game) {
     // 填充详情内容
     document.getElementById("detailsCover").src = game.cover;
     document.getElementById("detailsTitle").textContent = game.title;
+    const totalRating = calculateWeightedRating(game.ratings);
     document.getElementById("detailsInfo").innerHTML = `
         <p>发售日期：${new Date(game.releaseDate).toLocaleDateString()}</p>
         <p>游玩平台：${game.platform}</p>
-        <p>通关日期：${new Date(game.playDate).toLocaleDateString()}</p>
-        <p>评分：${game.rating}/10</p>
+        <p>通关日期：${game.playDate ? new Date(game.playDate).toLocaleDateString() : '未通关'}</p>
+        <div class="detailed-ratings">
+            <p>总体印象：${generateStars(game.ratings?.overall || 0)} (${game.ratings?.overall || 0})</p>
+            <p>玩法：${generateStars(game.ratings?.gameplay || 0)} (${game.ratings?.gameplay || 0})</p>
+            <p>剧情：${generateStars(game.ratings?.story || 0)} (${game.ratings?.story || 0})</p>
+            <p>画面：${generateStars(game.ratings?.graphics || 0)} (${game.ratings?.graphics || 0})</p>
+            <p>音乐：${generateStars(game.ratings?.music || 0)} (${game.ratings?.music || 0})</p>
+            <hr>
+            <p><strong>总评分：${generateStars(totalRating)} (${totalRating.toFixed(1)})</strong></p>
+        </div>
     `;
     document.getElementById("detailsReview").textContent = game.review;
 
@@ -290,7 +305,7 @@ function showGameDetails(game) {
 
     // 编辑按钮事件
     editBtn.onclick = () => {
-        showEditForm(game);
+        showEditForm(game); // Pass the full game object
         modal.classList.remove("active");
     };
 
@@ -327,13 +342,17 @@ async function updateGameList() {
 
         // 排序游戏列表
         filteredGames.sort((a, b) => {
-            // 按照评分排序
+            // 计算加权评分用于排序
+            const ratingA = calculateWeightedRating(a.ratings);
+            const ratingB = calculateWeightedRating(b.ratings);
+
+            // 按照加权评分排序
             if (ratingSort === "desc") {
-                return b.rating - a.rating;
+                return ratingB - ratingA;
             } else if (ratingSort === "asc") {
-                return a.rating - b.rating;
+                return ratingA - ratingB;
             }
-            return 0;
+            return 0; // 如果不需要评分排序，则保持原始顺序或按其他标准排序
         });
 
         // 清空并重新填充游戏网格
@@ -402,7 +421,12 @@ function showEditForm(game) {
     document.getElementById("editPlayDate").value = game.playDate;
     document.getElementById("editReleaseDate").value = game.releaseDate;
     document.getElementById("editPlatform").value = game.platform;
-    document.getElementById("editRating").value = game.rating;
+    // Populate the individual rating selects
+    document.getElementById("editRatingOverall").value = game.ratings?.overall || 5;
+    document.getElementById("editRatingGameplay").value = game.ratings?.gameplay || 5;
+    document.getElementById("editRatingStory").value = game.ratings?.story || 5;
+    document.getElementById("editRatingGraphics").value = game.ratings?.graphics || 5;
+    document.getElementById("editRatingMusic").value = game.ratings?.music || 5;
     document.getElementById("editReview").value = game.review;
 
     // 显示模态框
@@ -418,6 +442,8 @@ function showEditForm(game) {
     editForm.onsubmit = async (e) => {
         e.preventDefault();
 
+        showLoading("正在更新游戏记录...");
+
         try {
             const games = await getGames();
             const gameIndex = games.findIndex((g) => g.id === game.id);
@@ -431,7 +457,13 @@ function showEditForm(game) {
                 playDate: document.getElementById("editPlayDate").value,
                 releaseDate: document.getElementById("editReleaseDate").value,
                 platform: document.getElementById("editPlatform").value,
-                rating: document.getElementById("editRating").value,
+                ratings: {
+                    overall: parseInt(document.getElementById("editRatingOverall").value),
+                    gameplay: parseInt(document.getElementById("editRatingGameplay").value),
+                    story: parseInt(document.getElementById("editRatingStory").value),
+                    graphics: parseInt(document.getElementById("editRatingGraphics").value),
+                    music: parseInt(document.getElementById("editRatingMusic").value),
+                },
                 review: document.getElementById("editReview").value,
             };
 
@@ -458,6 +490,8 @@ function showEditForm(game) {
         } catch (error) {
             console.error("更新游戏记录失败:", error);
             showError("更新游戏记录失败，请重试");
+        } finally {
+            hideLoading();
         }
     };
 }
@@ -467,7 +501,11 @@ async function exportData() {
     try {
         showLoading("正在导出数据...");
         const games = await getGames();
-        const dataStr = JSON.stringify(games);
+        // Ensure ratings are properly stringified if they exist
+        const dataStr = JSON.stringify(games, (key, value) => {
+            // Handle potential issues with complex objects if needed
+            return value;
+        });
         const dataBlob = new Blob([dataStr], { type: "application/json" });
         const url = URL.createObjectURL(dataBlob);
         const link = document.createElement("a");
@@ -492,13 +530,42 @@ async function importData(file) {
         showLoading("正在导入数据...");
         const text = await file.text();
         const games = JSON.parse(text);
-        await saveGames(games);
+        // Basic validation or migration logic could be added here
+        // to handle older data formats without the 'ratings' object
+        const validatedGames = games.map(game => {
+            if (!game.ratings && game.rating) { // Simple migration for old format
+                console.warn(`Migrating old rating format for game: ${game.title}`);
+                // Assign a default structure or try to infer from old rating
+                // This is a basic example, might need more sophisticated logic
+                const defaultRating = Math.round(Math.min(Math.max(parseFloat(game.rating) / 2, 0), 5)); // Convert 0-10 to 0-5
+                return {
+                    ...game,
+                    ratings: {
+                        overall: defaultRating,
+                        gameplay: defaultRating,
+                        story: defaultRating,
+                        graphics: defaultRating,
+                        music: defaultRating
+                    },
+                    rating: undefined // Remove old rating field
+                };
+            } else if (!game.ratings) {
+                console.warn(`Game missing ratings object: ${game.title}`);
+                // Provide a default ratings object if missing entirely
+                return {
+                    ...game,
+                    ratings: { overall: 3, gameplay: 3, story: 3, graphics: 3, music: 3 }
+                };
+            }
+            return game;
+        });
+        await saveGames(validatedGames);
         await updateGameList();
         await updateFilters();
         showError("数据导入成功");
     } catch (error) {
         console.error("导入数据失败:", error);
-        showError("导入数据失败，请确保文件格式正确");
+        showError("导入数据失败，请确保文件格式正确或尝试迁移旧数据");
     } finally {
         hideLoading();
     }
@@ -507,3 +574,39 @@ async function importData(file) {
 // 初始化页面
 updateGameList();
 updateFilters();
+
+// 计算加权平均分 (0-5)
+function calculateWeightedRating(ratings) {
+    if (!ratings) return 0;
+    const weights = {
+        overall: 0.3,
+        gameplay: 0.3,
+        story: 0.2,
+        graphics: 0.1,
+        music: 0.1,
+    };
+    let total = 0;
+    total += (ratings.overall || 0) * weights.overall;
+    total += (ratings.gameplay || 0) * weights.gameplay;
+    total += (ratings.story || 0) * weights.story;
+    total += (ratings.graphics || 0) * weights.graphics;
+    total += (ratings.music || 0) * weights.music;
+    // 四舍五入到最近的 0.5
+    return Math.round(total * 2) / 2;
+}
+
+// 生成星星 HTML
+function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    let starsHTML = '';
+    for (let i = 0; i < fullStars; i++) starsHTML += '★'; // 实心星
+    // 使用 Font Awesome 图标或 Unicode 字符表示半星和空星
+    if (halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>'; // 半星图标
+    for (let i = 0; i < emptyStars; i++) starsHTML += '<i class="far fa-star"></i>'; // 空星图标
+    // 如果需要纯文本星星，可以使用：
+    // if (halfStar) starsHTML += '½';
+    // for (let i = 0; i < emptyStars; i++) starsHTML += '☆';
+    return `<span class="stars">${starsHTML}</span>`;
+}
