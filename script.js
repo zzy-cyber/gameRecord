@@ -259,7 +259,7 @@ function createGameCard(game) {
                 <p>游玩平台：${game.platform}</p>
                 <p>通关日期：${game.playDate ? new Date(game.playDate).toLocaleDateString() : "过往游戏"}</p>
             </div>
-            <div class="game-rating">评分：${starsHTML} (${totalRating.toFixed(1)})</div>
+            <div class="game-rating">${starsHTML}</div>
         </div>
     `;
 
@@ -289,13 +289,11 @@ function showGameDetails(game) {
         <p>游玩平台：${game.platform}</p>
         <p>通关日期：${game.playDate ? new Date(game.playDate).toLocaleDateString() : '未通关'}</p>
         <div class="detailed-ratings">
-            <p>总体印象：${generateStars(game.ratings?.overall || 0)} (${game.ratings?.overall || 0})</p>
-            <p>玩法：${generateStars(game.ratings?.gameplay || 0)} (${game.ratings?.gameplay || 0})</p>
-            <p>剧情：${generateStars(game.ratings?.story || 0)} (${game.ratings?.story || 0})</p>
-            <p>画面：${generateStars(game.ratings?.graphics || 0)} (${game.ratings?.graphics || 0})</p>
-            <p>音乐：${generateStars(game.ratings?.music || 0)} (${game.ratings?.music || 0})</p>
-            <hr>
-            <p><strong>总评分：${generateStars(totalRating)} (${totalRating.toFixed(1)})</strong></p>
+            <p>总体印象：${generateStars(game.ratings?.overall || 0)}</p>
+            <p>玩法：${generateStars(game.ratings?.gameplay || 0)} </p>
+            <p>剧情：${generateStars(game.ratings?.story || 0)} </p>
+            <p>画面：${generateStars(game.ratings?.graphics || 0)}</p>
+            <p>音乐：${generateStars(game.ratings?.music || 0)} </p>
         </div>
     `;
     document.getElementById("detailsReview").textContent = game.review;
@@ -601,10 +599,10 @@ function generateStars(rating) {
     const halfStar = rating % 1 !== 0;
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
     let starsHTML = '';
-    for (let i = 0; i < fullStars; i++) starsHTML += '★'; // 实心星
+    for (let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>'; // 实心星
     // 使用 Font Awesome 图标或 Unicode 字符表示半星和空星
     if (halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>'; // 半星图标
-    for (let i = 0; i < emptyStars; i++) starsHTML += '<i class="far fa-star"></i>'; // 空星图标
+    // for (let i = 0; i < emptyStars; i++) starsHTML += '<i class="far fa-star"></i>'; // 空星图标
     // 如果需要纯文本星星，可以使用：
     // if (halfStar) starsHTML += '½';
     // for (let i = 0; i < emptyStars; i++) starsHTML += '☆';

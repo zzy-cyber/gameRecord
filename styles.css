@@ -169,15 +169,16 @@ header {
 }
 
 .detailed-ratings p {
-    margin-bottom: 0.5rem;
-    display: flex;
+    margin: 0.5rem 0;
+    display: grid;
+    grid-template-columns: 80px 1fr;
     align-items: center;
     gap: 0.5rem;
 }
 
 .detailed-ratings .stars {
-    min-width: 80px; /* Align stars */
-    display: inline-block;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .detailed-ratings strong {
@@ -198,7 +199,7 @@ header {
     padding: 1rem;
 }
 
-.rating-group > label {
+.rating-group>label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
@@ -212,7 +213,8 @@ header {
 
 .rating-inputs div {
     display: flex;
-    flex-direction: column; /* Stack label and select vertically */
+    flex-direction: column;
+    /* Stack label and select vertically */
     gap: 0.3rem;
 }
 
@@ -228,7 +230,8 @@ header {
     font-size: 1rem;
     background-color: #333;
     color: #e0e0e0;
-    width: 100%; /* Make selects take full width of their grid cell */
+    width: 100%;
+    /* Make selects take full width of their grid cell */
 }
 
 .game-title {
@@ -240,7 +243,8 @@ header {
 .game-details {
     font-size: 0.9rem;
     color: #a0a0a0;
-    margin-bottom: 0.5rem; /* Add some space below details */
+    margin-bottom: 0.5rem;
+    /* Add some space below details */
 }
 
 .game-rating {
@@ -249,20 +253,29 @@ header {
     margin-top: 0.5rem;
     display: flex;
     align-items: center;
-    gap: 0.3rem; /* Space between stars and text */
+    justify-content: center;
+    /* 居中星星 */
+    gap: 0.3rem;
+    /* Space between stars and text */
 }
 
 .stars {
-    font-size: 1.1em; /* Make stars slightly larger */
-    line-height: 1; /* Prevent extra line height */
+    font-size: 1.1em;
+    /* Make stars slightly larger */
+    line-height: 1;
+    /* Prevent extra line height */
 }
 
-.stars .fa-star, .stars .fa-star-half-alt, .stars .far.fa-star {
-    color: #f39c12; /* Star color */
+.stars .fa-star,
+.stars .fa-star-half-alt,
+.stars .far.fa-star {
+    color: #f39c12;
+    /* Star color */
 }
 
 .stars .far.fa-star {
-    color: #555; /* Empty star color */
+    color: #555;
+    /* Empty star color */
 }
 
 .game-rating {
